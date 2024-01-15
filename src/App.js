@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState, useEffect} from "react"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+
+  //1) Nejprve se nastaví longitude a latitude na prázdné stringy
+  const [longitude, setLongitude] = useState("")
+  const [latitude, setLatitude] = useState("")
+  const [urlMap, setUrlMap] = useState("")
+
+
+  //4) Z API se získají data a přidají se do h a p
+  const getCoordinates = async () =>{
+    const response = await fetch("http://api.open-notify.org/iss-now.json")
+    const data = await response.json()
+
+    setLatitude(data["iss_position"]["latitude"])
+    setLongitude(data["iss_position"]["longitude"])
+ 
+  //5) Aktivně se měnící odkaz na mapy s pozicí ISS -> useState, render <a>, natažení dat z API a pomocí useState jejich update
+    const iss_long = data["iss_position"]["longitude"]
+    const iss_lat = data["iss_position"]["latitude"]
+
+    setUrlMap(`https://mapy.cz/zakladni?x=${iss_long}&y=${iss_lat}&z=5`)
+  }
+
+  //3) Spustí se funkce (ale jen jednou a na konci)
+  useEffect( ()=>{
+    getCoordinates()
+  },[])
+
+
+
+
+  //2) Vyrenderuje se nadpis a text
+  return <div>
+    <h1>API</h1>
+    <h2>Zeměpisná šířka</h2>
+    <p>{latitude}</p>
+    <h2>Zeměpisná délka</h2>
+    <p>{longitude}</p>
+    <a href={urlMap} target="_blank">Pozice ISS v mapách</a>
+  </div>
 }
 
-export default App;
+
+export default App
