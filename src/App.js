@@ -3,7 +3,6 @@ import {useState, useEffect} from "react"
 const App = () => {
 
   const random = 3
-  ě
   //1) Nejprve se nastaví longitude a latitude na prázdné stringy
   const [longitude, setLongitude] = useState("")
   const [latitude, setLatitude] = useState("")
