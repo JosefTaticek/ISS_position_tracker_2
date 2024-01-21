@@ -7,6 +7,10 @@ const App = () => {
 
   const [loading, setLoading] = useState(false) 
 
+  useEffect( ()=>{
+
+  }, [])
+
 
   if (loading === true) {
     return <h2>Načítání stránky</h2>
